@@ -1,0 +1,17 @@
+2.
+The function sc.insert(Complex(40,10)); causes an error because the implementation of the function insert() called compares Complex objects using the > operator. The > operator has not been overloaded for the class Complex and this causes the error.
+
+3b.
+This is because we need two parameters in order to add on more to the path for each branch of the menu. Without an additional parameter for the path until the current call, it will be impossible to add on more during each recursive call and correctly display the path.
+
+4a.
+The time complexity is O(N^3) because this algorithm has three for loops nested in each other, each called N times.
+
+4b.
+The time complexity is O(N^3) because when calculating time complexity, we consider the worst possible case (i = N-1). So, in the second for loop, the condition j<i is considered to be j<N. Thus it remained 3 nested for loops iterating N times and hence it has a complexity of O(N^3). Besides that, the average case is i = N/2 which still evaluates out to (N^3)/2 and we disregard the constant, so it is still O(N^3).
+
+5a.
+The time complexity is O(N^2). The first for loop is iterated through N times, and then it needs to access an element in a linked list using the get() command, the get command has complexity O(N) since we consider the worst case when we access an element at the end of the list. The first for loop thus has a time complexity of O(N^2). Now, the second for loop won’t get executed since n1=n2=n=nmin, but even if it did it would have a time complexity of O(N^2) since it is iterated through and it calls the get() function during each iteration. So, since we ignore coefficients, the time complexity is O(N^2). Note that other commands like swap() have a complexity of O(1) and can be ignored.
+
+5b.
+The time complexity is O(N). The first for loop is iterated through around N times, each command in the for loop has complexity O(1), so the overall time complexity for the first for loop is O(N). Even if the second for loop executes(size of two sequences a little different), the second for loop’s complexity will also be O(N) since the insert command has complexity O(1). We ignore constants while calculating complexity so the time complexity for this function is O(N). Since it has a lower time complexity than part a, it’s better. 

@@ -1,0 +1,300 @@
+Design:
+Sequence contains a node and a variable that stores current size of the Sequence as well as two pointers to Nodes, *head and *tail. Each node contains two pointers to Nodes, *prev and *next, along with a variable of type ItemType that stores a value.The list does not contain a dummy node and is not circular. 
+
+
+
+
+Test cases:
+//Basic Cases 
+Sequence s; //default constructor test
+assert(s.empty()); //empty Sequence
+assert(!s.size()); //check size is 0
+assert(!s.remove(33)); //can’t remove anything from an empty Sequence
+assert(!s.erase(0)); //can’t erase anything from an empty Sequence
+assert(s.insert(0,222)); //simple test of insert
+assert(s.size()==1); //test if size is incremented
+assert(s.insert(23)==0); //second type of insert
+assert(!s.empty()); //Sequence not empty
+assert(s.find(222)==1);
+assert(s.insert(2, 34));
+assert(s.insert(777)==3);
+assert(s.size() == 4);
+assert(s.erase(0)); //remove first
+assert(s.remove(777)); //remove last
+assert(s.size() == 2);
+assert(s.remove(222)); //start checking if you can delete all the elements of Sequence
+assert(s.remove(34));
+assert(s.empty()); //all elements removed, must be empty
+Sequence t;
+    assert(t.insert(333)==0);
+    assert(t.erase(0));
+    assert(t.empty());
+    assert(!t.insert(1, 33));
+
+Sequence r;
+    assert(r.insert(3)==0);
+    assert(r.insert(0,2));
+
+    Sequence t;
+    assert(t.insert(333)==0);
+    assert(t.erase(0));
+    assert(t.empty());
+    assert(!t.insert(1, 33));
+
+Sequence s1, s2;
+s1.swap(s2); //swap empty Sequences
+assert(s.insert(32));
+assert(s.insert(33));
+
+//Testing the insert functions:
+assert(s.insert(0,0));
+assert(s.insert(1,2));
+assert(s.insert(3)==2);
+assert(s.insert(-2) == 0);
+
+void testInsert() //basic test cases for insert() and note insert() is used several other times
+{
+   Sequence s;
+    assert(s.insert(0,1)); //at beginning
+     assert(s.insert(1,2));  //in middle
+     assert(s.insert(3)==2); //correct location
+    assert(s.insert(0) == 0);  //correct location at beginning
+}
+
+//Testing get and set
+void getsetTest()
+{
+    Sequence t;
+    assert(t.insert(0, 1));
+    ItemType x = -10;
+    assert(t.get(0, x) && x == 1); //check basic functioning
+    assert(t.insert(1,22));
+    
+    
+    assert(t.set(0,22));
+    assert(t.get(0, x) && x == 22);  //basic functioning of set() and if get() works at the beginning
+    assert(t.insert(33));
+    assert(t.insert(21) == 0);
+    assert(t.get(0,x) && x == 21);    //updating t to see if get() still works
+    assert(t.remove(22) == 2);
+    assert(t.get(1,x) && x==33);  //get() works in the beginning
+    
+    Sequence e;
+    assert(!e.get(0,x));   //get() doesn't work if empty
+    assert(!e.set(0,x));   //set() doesn't work if empty
+    
+}
+
+//testing remove(), note erase() and remove() are used several times
+void testRemove()
+{
+    Sequence a;
+    assert(!a.insert(0));
+    for(int i = 1; i<4; i++)
+        assert(a.insert(i)==i);
+    
+    
+    a.remove(1);
+    assert(a.find(1) == -1);
+    
+    
+    
+}
+
+//Testing find
+void testFind()
+{
+  Sequence a;
+    assert(a.insert(12)==0);
+    assert(a.insert(1,12) );
+    assert(a.insert(12)==0);
+    assert(a.find(12) == 0 ); //several 12s, find correct one at beginning
+    assert(a.remove(12));
+    
+    
+    assert(a.insert(12)==0);
+    assert(a.insert(1,13));
+    assert(a.insert(12)==0);
+    assert(a.insert(13)==1);
+    assert(a.find(13) == 2); //in middle
+    assert(a.insert(4,14));
+    assert(a.insert(12)==0);
+    assert(a.find(14) == 5); //find at end
+  
+}
+
+
+//Testing subsequence
+void testSubsequence()
+{
+    Sequence small;
+    assert(small.insert(0,0));
+    assert(small.insert(1,2));
+    assert(small.insert(3)==2);
+    
+    Sequence large;
+    assert(large.insert(0,1));
+    assert(large.insert(1,0));
+    assert(large.insert(2,2));
+    assert(large.insert(3,3));
+    assert(large.insert(4,2));
+    assert(large.insert(5,6));
+    
+    //small now 0 2 3 and 
+    assert(subsequence(small, large) == -1);  //checks not a subsequence
+    assert(subsequence(large, small) == 1);   //check it is a subsequence in middle
+    assert(large.insert(0,0));
+    assert(large.insert(1,2));
+    assert(large.insert(2,3));
+    assert(subsequence(large, small) == 0); //check subsequence in middle
+    assert(large.insert(7,0));
+    assert(large.insert(8,2));
+    assert(large.insert(9,3));
+    assert(subsequence(large, small) == 0); //check returns lowest subsequence
+    assert(large.insert(0,4));
+    assert(large.insert(1,5));
+    assert(large.insert(2,6));
+    assert(subsequence(large, small) == 3); //check subsequence in beginning if multiple subsequences exist
+    assert(large.erase(3) && large.erase(4) && large.erase(5) && large.erase(10) && large.erase(10));
+    assert(subsequence(large, small) == 7); //check subsequence at the end
+    //cerr<<"Success!"<<endl;
+}
+
+//testing copy constructor and assignment operator
+void testCopyStuff()
+{
+    ItemType x = -10;
+    Sequence e;
+    assert(!e.get(0,x));
+    assert(!e.set(0,x));
+    Sequence w;
+    assert(!w.insert(1));
+    assert(w.insert(1, 2));
+    e=w;
+    //e=t;
+    w.dump();
+    e.dump();
+}
+
+//testing Interleave()
+void testInterleave()
+{
+    Sequence small;
+    assert(small.insert(0,0));
+    assert(small.insert(1,2));
+    assert(small.insert(2,4));
+    
+    Sequence large;
+    assert(large.insert(0,1));
+    assert(large.insert(1,3));
+    assert(large.insert(2,5));
+    assert(large.insert(3,7));
+    
+    Sequence result;
+    interleave(small, large, result); //first sequence<second sequence
+    //use dump() to check result;
+    interleave(large, small, small); //check aliasing
+    //use dump() to check small
+    assert(small.erase(0) && small.erase(1) && small.erase(2));
+    interleave(small, large, small); //check aliasing and interleave for same sized sequences
+    // use dump() to check small
+}
+
+Pseudocode:
+
+
+bool Sequence::insert(int pos, const ItemType& value)
+	create new Node and store value in it
+	check if Node is inserted in the middle of the Sequence
+		set  a temp variable to required position to insert value
+		update necessary pointers (of Node and Nodes before and after it) and size
+	otherwise, if Sequence is empty
+		set head and tail, update size
+	check if inserting in the beginning of a non empty Sequence
+		update the pointers of head and Node after it and size
+	check if inserting Node at end
+		update tail and pointers before Node and of Node
+	delete created Node if no inserts are successful
+
+
+int Sequence::insert(const ItemType& value)
+	check if Node is inserted in the beginning and call other insert function
+	otherwise find position to insert Node
+		insert Node using other insert function
+
+
+bool Sequence::erase(int pos)
+	check if position is valid for removal
+	create temp var equal to head
+	if only element in Sequence is removed
+		delete head
+		reset head, temp to nullptr
+		reduce size 
+	if the position is in the beginning of a non empty Sequence
+		update head and prev pointer
+		reduce size
+	if the element deleted from the middle of the Sequence
+		update temp to reach Node that needs to be deleted
+		update pointers, size and delete temp
+	if the element deleted is the last element
+		update tail, size and other pointers
+		delete temp
+	return false if no if statement was entered
+
+
+int Sequence::remove(const ItemType& value)
+	create var to count number of values removed
+	iterate through Nodes
+		if value found
+			call erase() at that pos and increase count
+	return count
+
+
+void Sequence::swap(Sequence& other)
+	switch other.head and head using a temp variable
+	switch other.tail and tail using a temp variable
+	switch other.m_size and m_size using a temp variable
+
+
+int Sequence::find(const ItemType& value) const
+	assign var temp to head
+	iterate through linked list
+		check if value is found
+
+bool Sequence::set(int pos, const ItemType& value)
+	check pos and head are valid
+	otherwise
+		cycle through linked list to position
+		set new value of node
+
+bool Sequence::get(int pos, ItemType& value) const
+	check pos and head are valid
+	otherwise
+		cycle through linked list to position
+		set new value of value
+
+
+int subsequence(const Sequence& seq1, const Sequence& seq2)
+	return -1 if second Sequence is empty or bigger than first Sequence or if the first Sequence is empty
+	iterate through Nodes of first Sequence	
+		check if a value in first Sequence matches the first value in the second Sequence			iterate through remaining values in second Sequence/first Sequence
+				if they aren’t equal
+					break;
+			if they were equal for all values of the second Sequence return position(i)
+	return -1 if no appropriate position was found
+
+
+
+void interleave(const Sequence& seq1, const Sequence& seq2, Sequence& result)
+	check if either/bot Sequence is empty
+	otherwise create a temp variable 
+		iterate through both Sequences for length of the shorter Sequence
+			get value stored at each pos
+			check if element of Sequence 1 can be inserted into temp
+				increment position in temp
+			check if element of Sequence 2 can be inserted into temp
+				increment position in temp
+			increment index of Sequence 1/2
+		iterate through remainder of longer Sequence
+
+
